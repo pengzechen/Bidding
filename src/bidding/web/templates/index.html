@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>招标信息系统</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, "Microsoft YaHei", sans-serif; background: #f5f6fa; color: #333; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    h1 { font-size: 22px; padding: 16px 0; }
+    .bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .bar select, .bar input, .bar button {
+      height: 36px; padding: 0 12px; border: 1px solid #d0d5dd; border-radius: 6px; font-size: 14px;
+    }
+    .bar input { flex: 1; min-width: 180px; }
+    .bar button { background: #2563eb; color: #fff; border: none; cursor: pointer; padding: 0 20px; }
+    .bar button:hover { background: #1d4ed8; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .tags a {
+      display: inline-block; padding: 4px 12px; border-radius: 14px; font-size: 13px;
+      text-decoration: none; background: #e8ecf1; color: #555;
+    }
+    .tags a.active { background: #2563eb; color: #fff; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    th { background: #f8fafc; text-align: left; padding: 10px 14px; font-size: 13px; color: #666; font-weight: 600; white-space: nowrap; }
+    td { padding: 10px 14px; font-size: 14px; border-top: 1px solid #f0f0f0; }
+    tr:hover td { background: #f8fafc; }
+    td a { color: #2563eb; text-decoration: none; }
+    td a:hover { text-decoration: underline; }
+    .type-tag {
+      display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap;
+    }
+    .type-bid_announcement { background: #dbeafe; color: #1e40af; }
+    .type-win_announcement { background: #d1fae5; color: #065f46; }
+    .type-change_announcement { background: #fef3c7; color: #92400e; }
+    .type-termination { background: #fee2e2; color: #991b1b; }
+    .pager { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 16px; font-size: 14px; }
+    .pager a { padding: 6px 14px; border: 1px solid #d0d5dd; border-radius: 6px; text-decoration: none; color: #333; }
+    .pager a.disabled { opacity: .4; pointer-events: none; }
+    .pager span { color: #888; }
+    .no-content { color: #999; font-style: italic; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>招标信息系统 <span style="font-size:14px;color:#888;font-weight:normal;">共 {{ total }} 条</span></h1>
+
+  <div class="tags">
+    <a href="/?q={{ q }}" class="{{ '' if notice_type else 'active' }}">全部</a>
+    {% for key, label in type_labels.items() %}
+    <a href="/?type={{ key }}&q={{ q }}" class="{{ 'active' if notice_type == key else '' }}">{{ label }}</a>
+    {% endfor %}
+  </div>
+
+  <form class="bar" method="get">
+    <input type="hidden" name="type" value="{{ notice_type }}">
+    <input type="text" name="q" value="{{ q }}" placeholder="搜索标题关键词...">
+    <button type="submit">搜索</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:50px">序号</th>
+        <th>标题</th>
+        <th style="width:90px">类型</th>
+        <th style="width:130px">公告编号</th>
+        <th style="width:100px">发布日期</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for n in notices %}
+      <tr>
+        <td>{{ n.id }}</td>
+        <td>
+          <a href="/detail/{{ n.id }}">{{ n.title }}</a>
+          {% if not n.content %}<span class="no-content">[未采集正文]</span>{% endif %}
+        </td>
+        <td><span class="type-tag type-{{ n.notice_type }}">{{ type_labels.get(n.notice_type, n.notice_type) }}</span></td>
+        <td style="font-size:12px;color:#888;">{{ n.notice_id or '' }}</td>
+        <td>{{ n.publish_date or '' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" style="text-align:center;padding:40px;color:#999;">没有数据</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if total_pages > 1 %}
+  <div class="pager">
+    <a href="/?page={{ page-1 }}&type={{ notice_type }}&q={{ q }}" class="{{ 'disabled' if page <= 1 else '' }}">上一页</a>
+    <span>{{ page }} / {{ total_pages }}</span>
+    <a href="/?page={{ page+1 }}&type={{ notice_type }}&q={{ q }}" class="{{ 'disabled' if page >= total_pages else '' }}">下一页</a>
+  </div>
+  {% endif %}
+</div>
+</body>
+</html>

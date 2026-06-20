@@ -1,0 +1,11 @@
+browser:
+  headless: true
+  timeout: 30000
+
+scraping:
+  max_pages_per_run: 50
+  incremental_stop_after: 10
+  rate_limit: 2.0
+
+database:
+  url: "sqlite+aiosqlite:///data/bidding.db"

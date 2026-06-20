@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: bidding
+Version: 0.1.0
+Summary: 招标信息智能采集系统
+Requires-Python: >=3.11
+Requires-Dist: playwright>=1.40
+Requires-Dist: pydantic>=2.0
+Requires-Dist: sqlalchemy[asyncio]>=2.0
+Requires-Dist: aiosqlite>=0.19
+Requires-Dist: typer>=0.9
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: structlog>=23.0

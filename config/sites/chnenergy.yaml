@@ -1,0 +1,7 @@
+name: chnenergy
+enabled: true
+rate_limit: 2.0
+notice_types:
+  - bid_announcement
+  - win_announcement
+  - change_announcement

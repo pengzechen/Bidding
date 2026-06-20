@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ n.title }} - 招标信息系统</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, "Microsoft YaHei", sans-serif; background: #f5f6fa; color: #333; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+    .back { display: inline-block; margin-bottom: 16px; color: #2563eb; text-decoration: none; font-size: 14px; }
+    .back:hover { text-decoration: underline; }
+    .card { background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .card h1 { font-size: 20px; line-height: 1.5; margin-bottom: 16px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0; }
+    .meta-item { font-size: 13px; color: #666; }
+    .meta-item strong { color: #333; }
+    .type-tag {
+      display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px;
+    }
+    .type-bid_announcement { background: #dbeafe; color: #1e40af; }
+    .type-win_announcement { background: #d1fae5; color: #065f46; }
+    .type-change_announcement { background: #fef3c7; color: #92400e; }
+    .content-area { line-height: 1.8; font-size: 15px; white-space: pre-wrap; word-break: break-all; }
+    .content-area table { border-collapse: collapse; margin: 12px 0; width: 100%; }
+    .content-area table td, .content-area table th { border: 1px solid #ddd; padding: 6px 10px; font-size: 14px; }
+    .no-content { padding: 40px; text-align: center; color: #999; }
+    .source-link { display: inline-block; margin-top: 20px; padding: 8px 16px; background: #f0f4f8; border-radius: 6px; font-size: 13px; color: #2563eb; text-decoration: none; }
+    .source-link:hover { background: #e0e7ef; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="javascript:history.back()">← 返回列表</a>
+  <div class="card">
+    <h1>{{ n.title }}</h1>
+    <div class="meta">
+      <span class="meta-item"><span class="type-tag type-{{ n.notice_type }}">{{ type_labels.get(n.notice_type, n.notice_type) }}</span></span>
+      {% if n.notice_id %}<span class="meta-item"><strong>编号:</strong> {{ n.notice_id }}</span>{% endif %}
+      {% if n.publish_date %}<span class="meta-item"><strong>发布:</strong> {{ n.publish_date }}</span>{% endif %}
+      {% if n.deadline %}<span class="meta-item"><strong>截止:</strong> {{ n.deadline }}</span>{% endif %}
+      {% if n.purchaser %}<span class="meta-item"><strong>招标人:</strong> {{ n.purchaser }}</span>{% endif %}
+      {% if n.agency %}<span class="meta-item"><strong>代理机构:</strong> {{ n.agency }}</span>{% endif %}
+      {% if n.budget %}<span class="meta-item"><strong>预算:</strong> {{ n.budget }}</span>{% endif %}
+      {% if n.winner %}<span class="meta-item"><strong>中标人:</strong> {{ n.winner }}</span>{% endif %}
+      {% if n.win_amount %}<span class="meta-item"><strong>中标金额:</strong> {{ n.win_amount }}</span>{% endif %}
+    </div>
+
+    {% if n.content %}
+      <div class="content-area">{{ n.content }}</div>
+    {% else %}
+      <div class="no-content">正文尚未采集，请执行: python -m bidding fetch-details --site {{ n.source_site }}</div>
+    {% endif %}
+
+    <a class="source-link" href="{{ n.source_url }}" target="_blank">查看原文 →</a>
+  </div>
+</div>
+</body>
+</html>
