@@ -17,10 +17,6 @@ from bidding.models.schema import BidNotice
 
 logger = structlog.get_logger()
 
-_BASE_URL = "https://ecp.sgcc.com.cn"
-_PORTAL = f"{_BASE_URL}/ecp2.0/portal"
-_API = f"{_BASE_URL}/ecp2.0/ecpwcmcore//index"
-
 _MENU_IDS: dict[NoticeType, str] = {
     NoticeType.BID_ANNOUNCEMENT: "2018032700291334",
     NoticeType.PREQUALIFICATION: "2018032700290425",
@@ -35,15 +31,6 @@ _DOC_TYPES: dict[NoticeType, str] = {
     NoticeType.NON_BID_ANNOUNCEMENT: "doci-bid",
     NoticeType.CANDIDATE_PUBLICITY: "doci-win",
     NoticeType.WIN_ANNOUNCEMENT: "doci-win",
-}
-
-_DETAIL_APIS: dict[str, str] = {
-    "doci-bid": f"{_API}/getNoticeBid",
-    "doci-win": f"{_API}/getNoticeWin",
-}
-
-_FILE_APIS: dict[str, str] = {
-    "doci-win": f"{_API}/getWinFile",
 }
 
 _PUR_TYPE_MAP: dict[str, ProjectCategory] = {
@@ -83,7 +70,7 @@ class SgccEcpAdapter(SiteAdapter):
     meta = AdapterMeta(
         name="sgcc_ecp",
         display_name="国家电网ECP",
-        base_url=_BASE_URL,
+        base_url="https://ecp.sgcc.com.cn",
         notice_types=[
             NoticeType.BID_ANNOUNCEMENT,
             NoticeType.NON_BID_ANNOUNCEMENT,
@@ -93,6 +80,17 @@ class SgccEcpAdapter(SiteAdapter):
         requires_login=False,
         rate_limit=1.0,
     )
+
+    _portal_path = "/ecp2.0/portal"
+    _api_path = "/ecp2.0/ecpwcmcore//index"
+
+    @property
+    def _portal(self) -> str:
+        return f"{self.meta.base_url}{self._portal_path}"
+
+    @property
+    def _api(self) -> str:
+        return f"{self.meta.base_url}{self._api_path}"
 
     async def _api_post(self, page: Page, url: str, body: dict | str) -> dict | None:
         result = await page.evaluate(
@@ -124,7 +122,7 @@ class SgccEcpAdapter(SiteAdapter):
             return
 
         await page.goto(
-            f"{_PORTAL}/#/portal/home",
+            f"{self._portal}/#/portal/home",
             wait_until="domcontentloaded",
             timeout=30000,
         )
@@ -148,7 +146,7 @@ class SgccEcpAdapter(SiteAdapter):
                 "orgName": "",
             }
 
-            rv = await self._api_post(page, f"{_API}/noteList", body)
+            rv = await self._api_post(page, f"{self._api}/noteList", body)
             if not rv:
                 break
 
@@ -181,12 +179,12 @@ class SgccEcpAdapter(SiteAdapter):
                 break
 
     async def _download_bid_zip(self, page: Page, notice_id: str) -> bytes | None:
-        """Download the announcement ZIP file via fetch and return raw bytes."""
+        download_path = f"{self._api_path}/downLoadBid"
         try:
             result = await page.evaluate(
-                """async (noticeId) => {
+                """async ([downloadPath, noticeId]) => {
                     const resp = await fetch(
-                        '/ecp2.0/ecpwcmcore//index/downLoadBid?noticeId=' + noticeId + '&noticeDetId='
+                        downloadPath + '?noticeId=' + noticeId + '&noticeDetId='
                     );
                     if (!resp.ok) return null;
                     const buf = await resp.arrayBuffer();
@@ -199,7 +197,7 @@ class SgccEcpAdapter(SiteAdapter):
                     }
                     return btoa(binary);
                 }""",
-                notice_id,
+                [download_path, notice_id],
             )
             if result:
                 return base64.b64decode(result)
@@ -224,7 +222,7 @@ class SgccEcpAdapter(SiteAdapter):
         menu_id = str(item.get("firstPageMenuId", ""))
         doctype = item.get("doctype", _DOC_TYPES.get(notice_type, "doci-bid"))
 
-        source_url = f"{_PORTAL}/#/doc/{doctype}/{notice_id}_{menu_id}"
+        source_url = f"{self._portal}/#/doc/{doctype}/{notice_id}_{menu_id}"
         publish_date = _parse_date(item.get("noticePublishTime"))
 
         detail = await self._fetch_detail(page, notice_id, doctype)
@@ -287,7 +285,7 @@ class SgccEcpAdapter(SiteAdapter):
                 winner = bid_org_name if notice_type == NoticeType.WIN_ANNOUNCEMENT else None
 
         attachments = []
-        file_api = _FILE_APIS.get(doctype)
+        file_api = {"doci-win": f"{self._api}/getWinFile"}.get(doctype)
         if file_api:
             file_rv = await self._api_post(page, file_api, notice_id)
             if file_rv:
@@ -329,7 +327,11 @@ class SgccEcpAdapter(SiteAdapter):
     async def _fetch_detail(
         self, page: Page, notice_id: str, doctype: str
     ) -> dict | None:
-        api_url = _DETAIL_APIS.get(doctype)
+        _detail_apis = {
+            "doci-bid": f"{self._api}/getNoticeBid",
+            "doci-win": f"{self._api}/getNoticeWin",
+        }
+        api_url = _detail_apis.get(doctype)
         if not api_url:
             return None
         try:

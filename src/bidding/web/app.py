@@ -20,6 +20,7 @@ SITE_LABELS = {
     "chnenergy": "国能e招",
     "cdt_ec": "大唐集团",
     "sgcc_ecp": "国家电网ECP",
+    "sgcc_etp": "国网电工交易",
 }
 
 NOTICE_TYPE_LABELS = {

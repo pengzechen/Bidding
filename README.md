@@ -9,7 +9,7 @@
 | chnenergybidding.com.cn | 国能e招 | 已完成 | 招标/中标/变更，详情页HTML提取 |
 | cdt-ec.com | 大唐集团电商 | 已完成 | 招标/非招标，PDF附件提取 |
 | ecp.sgcc.com.cn | 国家电网ECP | 已完成 | 招标/采购/中标/候选人公示，自动下载ZIP→提取DOCX正文 |
-| sgccetp.com.cn | 国网电工交易 | 待开发 | |
+| sgccetp.com.cn | 国网电工交易 | 已完成 | 复用ECP适配器，招标/采购/中标/候选人公示 |
 | neep.shop | 国能e购 | 待开发 | |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
@@ -42,6 +42,9 @@ python -m bidding scrape --site cdt_ec --max-pages 2
 
 # 采集国家电网ECP（支持招标、采购、中标、候选人公示）
 python -m bidding scrape --site sgcc_ecp --max-pages 2
+
+# 采集国网电工交易（与ECP同平台，不同域名）
+python -m bidding scrape --site sgcc_etp --max-pages 2
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -111,7 +114,8 @@ src/bidding/
 │   ├── registry.py        # 自动发现与注册
 │   ├── chnenergy.py       # 国能e招适配器
 │   ├── cdt_ec.py          # 大唐集团适配器
-│   └── sgcc_ecp.py        # 国家电网ECP适配器
+│   ├── sgcc_ecp.py        # 国家电网ECP适配器
+│   └── sgcc_etp.py        # 国网电工交易适配器（继承ECP）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
