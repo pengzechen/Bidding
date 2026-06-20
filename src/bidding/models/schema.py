@@ -50,7 +50,9 @@ class BidNotice(BaseModel):
 
     def merge(self, other: BidNotice) -> Self:
         data = self.model_dump()
+        skip = {"content_hash", "title", "source_site", "source_url", "notice_type"}
         for k, v in other.model_dump(exclude_none=True).items():
-            if k != "content_hash":
-                data[k] = v
+            if k in skip or v == "":
+                continue
+            data[k] = v
         return type(self)(**data)

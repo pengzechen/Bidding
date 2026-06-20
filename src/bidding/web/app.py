@@ -22,6 +22,7 @@ SITE_LABELS = {
     "sgcc_ecp": "国家电网ECP",
     "sgcc_etp": "国网电工交易",
     "neep": "国能e购",
+    "cgnpc": "中广核电商",
 }
 
 NOTICE_TYPE_LABELS = {
