@@ -23,6 +23,7 @@ SITE_LABELS = {
     "sgcc_etp": "国网电工交易",
     "neep": "国能e购",
     "cgnpc": "中广核电商",
+    "lxjypt": "陇西县公共资源交易",
 }
 
 NOTICE_TYPE_LABELS = {

@@ -12,6 +12,7 @@
 | sgccetp.com.cn | 国网电工交易 | 已完成 | 复用ECP适配器，招标/采购/中标/候选人公示 |
 | neep.shop | 国能e购 | 已完成 | 询价/竞争性谈判/采购结果，JSONP分页+OSS详情页 |
 | ecp.cgnpc.com.cn | 中广核电商 | 已完成 | 招标/资格预审/候选人/中标/采购，静态JSON分页+Playwright详情页 |
+| www.lxjypt.cn | 陇西县公共资源交易 | 待校验 | JeeSite CMS，工程建设等；结构完成，条目解析/分页待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -52,6 +53,9 @@ python -m bidding scrape --site neep --max-pages 2
 
 # 采集中广核电商（招标/资格预审/候选人/中标/采购）
 python -m bidding scrape --site cgnpc --max-pages 2
+
+# 采集陇西县公共资源交易（JeeSite CMS；结构完成，解析待联网校验）
+python -m bidding scrape --site lxjypt --max-pages 2
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -124,7 +128,8 @@ src/bidding/
 │   ├── sgcc_ecp.py        # 国家电网ECP适配器
 │   ├── sgcc_etp.py        # 国网电工交易适配器（继承ECP）
 │   ├── neep.py            # 国能e购适配器
-│   └── cgnpc.py           # 中广核电商适配器
+│   ├── cgnpc.py           # 中广核电商适配器
+│   └── lxjypt.py          # 陇西县公共资源交易适配器
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
