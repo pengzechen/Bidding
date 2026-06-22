@@ -26,6 +26,7 @@ SITE_LABELS = {
     "lxjypt": "陇西县公共资源交易",
     "nxgyzb": "宁夏国资运营采购",
     "iccec": "中交招采网",
+    "xd_eps": "西电电子采购平台",
 }
 
 NOTICE_TYPE_LABELS = {
