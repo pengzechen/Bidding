@@ -24,6 +24,7 @@ SITE_LABELS = {
     "neep": "国能e购",
     "cgnpc": "中广核电商",
     "lxjypt": "陇西县公共资源交易",
+    "nxgyzb": "宁夏国资运营采购",
 }
 
 NOTICE_TYPE_LABELS = {
