@@ -17,6 +17,7 @@
 | zjzcw.iccec.cn | 中交招采网 | 待校验 | Vue SPA+JSON API；接口已逆向，签名/字段待联网校验 |
 | eps.xd.com.cn:8881 | 西电电子采购平台 | 待校验 | 登录墙，仅首页内联条目；采购/变更/中标/竞卖，解析待联网校验 |
 | www.chinabidding.cn | 采购与招标网 | 待校验 | 阿里云WAF，须Playwright过挑战；招标公告入口已接入，其余分类/解析待联网校验 |
+| ep.jxic.com | 江投集团电子采购平台 | 待校验 | Nuxt SSR，详情/notice/<id>；分类码/列表分页/解析待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -72,6 +73,9 @@ python -m bidding scrape --site xd_eps --max-pages 1
 
 # 采集采购与招标网（阿里云WAF，须Playwright过挑战；解析待联网校验）
 python -m bidding scrape --site chinabidding --max-pages 1
+
+# 采集江投集团电子采购平台（Nuxt SSR；解析待联网校验）
+python -m bidding scrape --site jxic --max-pages 1
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -149,7 +153,8 @@ src/bidding/
 │   ├── nxgyzb.py          # 宁夏国资运营采购适配器
 │   ├── iccec.py           # 中交招采网适配器（Vue SPA + JSON API）
 │   ├── xd_eps.py          # 西电电子采购平台适配器（登录墙，仅首页内联）
-│   └── chinabidding.py    # 采购与招标网适配器（阿里云WAF，须Playwright）
+│   ├── chinabidding.py    # 采购与招标网适配器（阿里云WAF，须Playwright）
+│   └── jxic.py            # 江投集团电子采购平台适配器（Nuxt SSR）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
