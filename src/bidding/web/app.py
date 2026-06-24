@@ -23,6 +23,13 @@ SITE_LABELS = {
     "sgcc_etp": "国网电工交易",
     "neep": "国能e购",
     "cgnpc": "中广核电商",
+    "lxjypt": "陇西县公共资源交易",
+    "nxgyzb": "宁夏国资运营采购",
+    "iccec": "中交招采网",
+    "xd_eps": "西电电子采购平台",
+    "chinabidding": "采购与招标网",
+    "jxic": "江投集团电子采购平台",
+    "cebpubservice": "中国招标投标公共服务平台",
 }
 
 NOTICE_TYPE_LABELS = {

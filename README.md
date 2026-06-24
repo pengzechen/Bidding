@@ -12,6 +12,13 @@
 | sgccetp.com.cn | 国网电工交易 | 已完成 | 复用ECP适配器，招标/采购/中标/候选人公示 |
 | neep.shop | 国能e购 | 已完成 | 询价/竞争性谈判/采购结果，JSONP分页+OSS详情页 |
 | ecp.cgnpc.com.cn | 中广核电商 | 已完成 | 招标/资格预审/候选人/中标/采购，静态JSON分页+Playwright详情页 |
+| www.lxjypt.cn | 陇西县公共资源交易 | 待校验 | JeeSite CMS，工程建设等；结构完成，条目解析/分页待联网校验 |
+| gylpt.nxgyzb.com | 宁夏国资运营采购 | 待校验 | 静态CMS，招标/非招标/竞拍；结构完成，条目解析/分页待联网校验 |
+| zjzcw.iccec.cn | 中交招采网 | 待校验 | Vue SPA+JSON API；接口已逆向，签名/字段待联网校验 |
+| eps.xd.com.cn:8881 | 西电电子采购平台 | 待校验 | 登录墙，仅首页内联条目；采购/变更/中标/竞卖，解析待联网校验 |
+| www.chinabidding.cn | 采购与招标网 | 待校验 | 阿里云WAF，须Playwright过挑战；招标公告入口已接入，其余分类/解析待联网校验 |
+| ep.jxic.com | 江投集团电子采购平台 | 待校验 | Nuxt SSR，详情/notice/<id>；分类码/列表分页/解析待联网校验 |
+| bulletin.cebpubservice.com | 中国招标投标公共服务平台 | 待校验 | 国家级聚合，搜索页/xxfbcmses/search/bulletin.html；categoryId/结果解析待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -52,6 +59,27 @@ python -m bidding scrape --site neep --max-pages 2
 
 # 采集中广核电商（招标/资格预审/候选人/中标/采购）
 python -m bidding scrape --site cgnpc --max-pages 2
+
+# 采集陇西县公共资源交易（JeeSite CMS；结构完成，解析待联网校验）
+python -m bidding scrape --site lxjypt --max-pages 2
+
+# 采集宁夏国资运营采购（静态CMS；结构完成，解析待联网校验）
+python -m bidding scrape --site nxgyzb --max-pages 2
+
+# 采集中交招采网（Vue SPA+JSON API；接口已逆向，签名/字段待联网校验）
+python -m bidding scrape --site iccec --max-pages 2
+
+# 采集西电电子采购平台（登录墙，仅首页内联条目；解析待联网校验）
+python -m bidding scrape --site xd_eps --max-pages 1
+
+# 采集采购与招标网（阿里云WAF，须Playwright过挑战；解析待联网校验）
+python -m bidding scrape --site chinabidding --max-pages 1
+
+# 采集江投集团电子采购平台（Nuxt SSR；解析待联网校验）
+python -m bidding scrape --site jxic --max-pages 1
+
+# 采集中国招标投标公共服务平台（国家级聚合；解析待联网校验）
+python -m bidding scrape --site cebpubservice --max-pages 1
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -124,7 +152,14 @@ src/bidding/
 │   ├── sgcc_ecp.py        # 国家电网ECP适配器
 │   ├── sgcc_etp.py        # 国网电工交易适配器（继承ECP）
 │   ├── neep.py            # 国能e购适配器
-│   └── cgnpc.py           # 中广核电商适配器
+│   ├── cgnpc.py           # 中广核电商适配器
+│   ├── lxjypt.py          # 陇西县公共资源交易适配器
+│   ├── nxgyzb.py          # 宁夏国资运营采购适配器
+│   ├── iccec.py           # 中交招采网适配器（Vue SPA + JSON API）
+│   ├── xd_eps.py          # 西电电子采购平台适配器（登录墙，仅首页内联）
+│   ├── chinabidding.py    # 采购与招标网适配器（阿里云WAF，须Playwright）
+│   ├── jxic.py            # 江投集团电子采购平台适配器（Nuxt SSR）
+│   └── cebpubservice.py   # 中国招标投标公共服务平台适配器（国家级聚合）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
