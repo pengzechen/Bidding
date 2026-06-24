@@ -33,6 +33,7 @@ SITE_LABELS = {
     "ceec": "中国能建",
     "chdtp": "华电集团",
     "powerchina": "中国电建",
+    "chng": "华能集团",
 }
 
 NOTICE_TYPE_LABELS = {

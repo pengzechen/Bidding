@@ -4,6 +4,7 @@ import asyncio
 
 import structlog
 from playwright.async_api import async_playwright
+from playwright_stealth import Stealth
 
 from bidding.adapters.base import SiteAdapter
 from bidding.adapters.registry import auto_discover, get_adapter, list_adapters
@@ -47,6 +48,7 @@ class ScrapingEngine:
             return
 
         async with async_playwright() as p:
+            Stealth().hook_playwright_context(p)
             browser = await p.chromium.launch(
                 headless=self.headless,
                 args=["--disable-blink-features=AutomationControlled"],
