@@ -30,6 +30,7 @@ SITE_LABELS = {
     "chinabidding": "采购与招标网",
     "jxic": "江投集团电子采购平台",
     "cebpubservice": "中国招标投标公共服务平台",
+    "ceec": "中国能建",
 }
 
 NOTICE_TYPE_LABELS = {

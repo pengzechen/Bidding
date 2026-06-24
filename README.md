@@ -13,7 +13,8 @@
 | neep.shop | 国能e购 | 已完成 | 询价/竞争性谈判/采购结果，JSONP分页+OSS详情页 |
 | ecp.cgnpc.com.cn | 中广核电商 | 已完成 | 招标/资格预审/候选人/中标/采购，静态JSON分页+Playwright详情页 |
 | www.lxjypt.cn | 陇西县公共资源交易 | 待校验 | JeeSite CMS，工程建设等；结构完成，条目解析/分页待联网校验 |
-| gylpt.nxgyzb.com | 宁夏国资运营采购 | 待校验 | 静态CMS，招标/非招标/竞拍；结构完成，条目解析/分页待联网校验 |
+| gylpt.nxgyzb.com | 宁夏国资运营采购 | 已完成 | 静态CMS，招标/非招标/竞拍，Playwright列表+详情页提取 |
+| ec.ceec.net.cn | 中国能建电子采购平台 | 已完成 | AjaxPro API，招标/采购/资格预审/候选人/中标，双格式解析 |
 | zjzcw.iccec.cn | 中交招采网 | 待校验 | Vue SPA+JSON API；接口已逆向，签名/字段待联网校验 |
 | eps.xd.com.cn:8881 | 西电电子采购平台 | 待校验 | 登录墙，仅首页内联条目；采购/变更/中标/竞卖，解析待联网校验 |
 | www.chinabidding.cn | 采购与招标网 | 待校验 | 阿里云WAF，须Playwright过挑战；招标公告入口已接入，其余分类/解析待联网校验 |
@@ -63,8 +64,11 @@ python -m bidding scrape --site cgnpc --max-pages 2
 # 采集陇西县公共资源交易（JeeSite CMS；结构完成，解析待联网校验）
 python -m bidding scrape --site lxjypt --max-pages 2
 
-# 采集宁夏国资运营采购（静态CMS；结构完成，解析待联网校验）
+# 采集宁夏国资运营采购
 python -m bidding scrape --site nxgyzb --max-pages 2
+
+# 采集中国能建电子采购平台（AjaxPro API，招标/采购/资格预审/候选人/中标）
+python -m bidding scrape --site ceec --max-pages 2
 
 # 采集中交招采网（Vue SPA+JSON API；接口已逆向，签名/字段待联网校验）
 python -m bidding scrape --site iccec --max-pages 2
@@ -155,6 +159,7 @@ src/bidding/
 │   ├── cgnpc.py           # 中广核电商适配器
 │   ├── lxjypt.py          # 陇西县公共资源交易适配器
 │   ├── nxgyzb.py          # 宁夏国资运营采购适配器
+│   ├── ceec.py            # 中国能建电子采购平台适配器（AjaxPro API）
 │   ├── iccec.py           # 中交招采网适配器（Vue SPA + JSON API）
 │   ├── xd_eps.py          # 西电电子采购平台适配器（登录墙，仅首页内联）
 │   ├── chinabidding.py    # 采购与招标网适配器（阿里云WAF，须Playwright）

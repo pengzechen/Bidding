@@ -105,11 +105,28 @@ def extract_text_from_zip(zip_data: bytes) -> tuple[str | None, str | None]:
     if not docs:
         return None, None
 
-    doc_name, doc_data = docs[0]
-    for name, data in docs:
-        if "公告" in name:
-            doc_name, doc_data = name, data
-            break
+    docx_files = [(n, d) for n, d in docs if n.lower().endswith(".docx")]
+    doc_files = [(n, d) for n, d in docs if n.lower().endswith(".doc")]
+
+    def _pick_best(candidates: list[tuple[str, bytes]]) -> tuple[str, bytes] | None:
+        if not candidates:
+            return None
+        for name, data in candidates:
+            if "公告" in name and "附件" not in name:
+                return name, data
+        for name, data in candidates:
+            if "公告" in name:
+                return name, data
+        return candidates[0]
+
+    best_docx = _pick_best(docx_files)
+    best_doc = _pick_best(doc_files)
+
+    chosen = best_docx or best_doc
+    if not chosen:
+        return None, None
+
+    doc_name, doc_data = chosen
 
     h = hashlib.md5(zip_data).hexdigest()[:12]
     doc_dir = _ensure_doc_dir()
@@ -131,6 +148,21 @@ def extract_text_from_zip(zip_data: bytes) -> tuple[str | None, str | None]:
             logger.warning("doc.docx_extract_failed", name=doc_name)
     elif doc_name.lower().endswith(".doc"):
         text = extract_text_from_doc(doc_data)
+
+    if not text and best_doc and chosen != best_doc:
+        fallback_name, fallback_data = best_doc
+        text = extract_text_from_doc(fallback_data)
+        if text:
+            logger.info("doc.fallback_to_doc", name=fallback_name)
+
+    if not text and best_docx and chosen != best_docx:
+        fallback_name, fallback_data = best_docx
+        try:
+            text = extract_text_from_docx(fallback_data)
+            if text:
+                logger.info("doc.fallback_to_docx", name=fallback_name)
+        except Exception:
+            pass
 
     if text:
         logger.info("doc.extracted", name=doc_name, chars=len(text))
