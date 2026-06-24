@@ -16,6 +16,7 @@
 | gylpt.nxgyzb.com | 宁夏国资运营采购 | 已完成 | 静态CMS，招标/非招标/竞拍，Playwright列表+详情页提取 |
 | ec.ceec.net.cn | 中国能建电子采购平台 | 已完成 | AjaxPro API，招标/采购/资格预审/候选人/中标，双格式解析 |
 | www.chdtp.com.cn | 华电集团电子商务平台 | 已完成 | JSP表单POST+静态详情页，招标/询比/谈判/中标/候选人/终止 |
+| ec.powerchina.cn | 中国电建设备物资集中采购平台 | 已完成 | SSR列表+PDF内嵌查看器，采购/变更/中标/终止，openFileById公开接口提取PDF正文 |
 | zjzcw.iccec.cn | 中交招采网 | 待校验 | Vue SPA+JSON API；接口已逆向，签名/字段待联网校验 |
 | eps.xd.com.cn:8881 | 西电电子采购平台 | 待校验 | 登录墙，仅首页内联条目；采购/变更/中标/竞卖，解析待联网校验 |
 | www.chinabidding.cn | 采购与招标网 | 待校验 | 阿里云WAF，须Playwright过挑战；招标公告入口已接入，其余分类/解析待联网校验 |
@@ -73,6 +74,9 @@ python -m bidding scrape --site ceec --max-pages 2
 
 # 采集华电集团电子商务平台（招标/询比/谈判/中标/候选人/终止）
 python -m bidding scrape --site chdtp --max-pages 2
+
+# 采集中国电建设备物资集中采购平台（采购/变更/中标/终止，PDF正文提取）
+python -m bidding scrape --site powerchina --max-pages 2
 
 # 采集中交招采网（Vue SPA+JSON API；接口已逆向，签名/字段待联网校验）
 python -m bidding scrape --site iccec --max-pages 2
@@ -155,21 +159,25 @@ src/bidding/
 ├── adapters/
 │   ├── base.py            # 适配器基类
 │   ├── registry.py        # 自动发现与注册
+
 │   ├── chnenergy.py       # 国能e招适配器
 │   ├── cdt_ec.py          # 大唐集团适配器
 │   ├── sgcc_ecp.py        # 国家电网ECP适配器
 │   ├── sgcc_etp.py        # 国网电工交易适配器（继承ECP）
 │   ├── neep.py            # 国能e购适配器
 │   ├── cgnpc.py           # 中广核电商适配器
+
 │   ├── lxjypt.py          # 陇西县公共资源交易适配器
 │   ├── nxgyzb.py          # 宁夏国资运营采购适配器
+│   ├── xd_eps.py          # 西电电子采购平台适配器（登录墙，仅首页内联）
+│   ├── iccec.py           # 中交招采网适配器（Vue SPA + JSON API）
+│   └── cebpubservice.py   # 中国招标投标公共服务平台适配器（国家级聚合）
+│   ├── jxic.py            # 江投集团电子采购平台适配器（Nuxt SSR）
+│   ├── chinabidding.py    # 采购与招标网适配器（阿里云WAF，须Playwright）
+
 │   ├── ceec.py            # 中国能建电子采购平台适配器（AjaxPro API）
 │   ├── chdtp.py           # 华电集团电子商务平台适配器（JSP表单POST）
-│   ├── iccec.py           # 中交招采网适配器（Vue SPA + JSON API）
-│   ├── xd_eps.py          # 西电电子采购平台适配器（登录墙，仅首页内联）
-│   ├── chinabidding.py    # 采购与招标网适配器（阿里云WAF，须Playwright）
-│   ├── jxic.py            # 江投集团电子采购平台适配器（Nuxt SSR）
-│   └── cebpubservice.py   # 中国招标投标公共服务平台适配器（国家级聚合）
+│   ├── powerchina.py      # 中国电建设备物资集中采购平台适配器（PDF提取）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写

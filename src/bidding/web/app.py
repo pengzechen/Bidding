@@ -32,6 +32,7 @@ SITE_LABELS = {
     "cebpubservice": "中国招标投标公共服务平台",
     "ceec": "中国能建",
     "chdtp": "华电集团",
+    "powerchina": "中国电建",
 }
 
 NOTICE_TYPE_LABELS = {
