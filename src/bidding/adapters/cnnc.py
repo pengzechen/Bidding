@@ -167,6 +167,15 @@ class CnncAdapter(SiteAdapter):
 
             rep = captcha_data.get("get", {}).get("repData", {})
             if not rep:
+                if attempt < 4:
+                    captcha_data.clear()
+                    page.on("response", on_resp)
+                    try:
+                        await page.reload(wait_until="networkidle", timeout=20000)
+                        await asyncio.sleep(4)
+                    finally:
+                        page.remove_listener("response", on_resp)
+                    continue
                 logger.warning("cnnc.detail.no_captcha_data", url=url)
                 return None
 
@@ -178,11 +187,18 @@ class CnncAdapter(SiteAdapter):
             gap_x = solve_slider_gap(bg_b64, jig_b64)
             if gap_x is None:
                 logger.warning("cnnc.detail.captcha_match_failed", url=url)
+                if attempt < 4:
+                    captcha_data.clear()
+                    page.on("response", on_resp)
+                    try:
+                        await page.reload(wait_until="networkidle", timeout=20000)
+                        await asyncio.sleep(4)
+                    finally:
+                        page.remove_listener("response", on_resp)
+                    continue
                 return None
 
-            img_w = 310
-            display_w = 400
-            drag_distance = gap_x * display_w / img_w
+            drag_distance = gap_x * 400 / 310
 
             if not await self._drag_slider(page, drag_distance):
                 return None
@@ -196,7 +212,7 @@ class CnncAdapter(SiteAdapter):
             page.on("response", on_resp)
             try:
                 await page.reload(wait_until="networkidle", timeout=20000)
-                await asyncio.sleep(3)
+                await asyncio.sleep(4)
             finally:
                 page.remove_listener("response", on_resp)
         else:
