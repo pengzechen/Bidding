@@ -20,6 +20,7 @@ class AdapterMeta:
     requires_login: bool = False
     rate_limit: float = 2.0
     max_concurrent_pages: int = 1
+    persistent_context: bool = False
 
 
 @dataclass

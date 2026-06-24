@@ -69,6 +69,10 @@ class ScrapingEngine:
     async def _scrape_site(self, browser, adapter: SiteAdapter):
         await self.dedup.warm_up(adapter.meta.name)
 
+        if adapter.meta.persistent_context:
+            await self._scrape_site_persistent(adapter)
+            return
+
         context = await browser.new_context(
             viewport={"width": 1920, "height": 1080},
             user_agent=_DEFAULT_UA,
@@ -124,3 +128,51 @@ class ScrapingEngine:
                     await page.close()
         finally:
             await context.close()
+
+    async def _scrape_site_persistent(self, adapter: SiteAdapter):
+        """Use a persistent browser context for sites with aggressive WAF."""
+        from pathlib import Path
+        from playwright.async_api import async_playwright
+
+        profile_dir = Path(__file__).resolve().parents[2].parent / "data" / f"{adapter.meta.name}-profile"
+        profile_dir.mkdir(parents=True, exist_ok=True)
+
+        async with async_playwright() as p:
+            Stealth().hook_playwright_context(p)
+            context = await p.chromium.launch_persistent_context(
+                str(profile_dir),
+                headless=self.headless,
+                viewport={"width": 1920, "height": 1080},
+                user_agent=_DEFAULT_UA,
+                locale="zh-CN",
+                timezone_id="Asia/Shanghai",
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+            try:
+                page = context.pages[0] if context.pages else await context.new_page()
+
+                for notice_type in adapter.meta.notice_types:
+                    try:
+                        dup_streak = 0
+                        async for notice in adapter.scrape_list(page, notice_type):
+                            if await self.dedup.is_duplicate(notice.content_hash):
+                                dup_streak += 1
+                                if dup_streak >= self.incremental_stop:
+                                    logger.info(
+                                        "engine.incremental_stop",
+                                        site=adapter.meta.name,
+                                        type=notice_type.value,
+                                        streak=dup_streak,
+                                    )
+                                    break
+                                continue
+                            dup_streak = 0
+                            await self.pipeline.process(notice)
+                    except Exception:
+                        logger.exception(
+                            "engine.scrape_error",
+                            site=adapter.meta.name,
+                            type=notice_type.value,
+                        )
+            finally:
+                await context.close()

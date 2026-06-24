@@ -19,6 +19,8 @@
 | ec.powerchina.cn | 中国电建设备物资集中采购平台 | 已完成 | SSR列表+PDF内嵌查看器，采购/变更/中标/终止，openFileById公开接口提取PDF正文 |
 | ec.chng.com.cn | 华能集团电子商务平台 | 已完成 | Vue SPA+JSON API，瑞数反爬(stealth绕过)，招标/资格预审/候选人/中标/询比/谈判/竞价 |
 | www.szecp.com.cn | 华润守正采购交易平台 | 已完成 | REST API列表+静态详情页，招标/更正/候选人/中标/终止/非招标/变更/结果，表格中标解析 |
+| www.hebztb.com | 招标通电子招投标交易平台 | 已完成 | JSON API列表+SSR详情页，招标/变更/中标/废标，blurSearch元数据提取 |
+| one.cnncecp.com | 中核集团电子采购平台 | 已完成 | 瑞数信息WAF(persistent context绕过)，招标/资格预审/中标/非招标，滑块验证码(OpenCV模板匹配)+PDF正文提取 |
 | zjzcw.iccec.cn | 中交招采网 | 待校验 | Vue SPA+JSON API；接口已逆向，签名/字段待联网校验 |
 | eps.xd.com.cn:8881 | 西电电子采购平台 | 待校验 | 登录墙，仅首页内联条目；采购/变更/中标/竞卖，解析待联网校验 |
 | www.chinabidding.cn | 采购与招标网 | 待校验 | 阿里云WAF，须Playwright过挑战；招标公告入口已接入，其余分类/解析待联网校验 |

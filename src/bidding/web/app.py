@@ -35,6 +35,8 @@ SITE_LABELS = {
     "powerchina": "中国电建",
     "chng": "华能集团",
     "szecp": "华润守正",
+    "hebztb": "招标通",
+    "cnnc": "中核集团",
 }
 
 NOTICE_TYPE_LABELS = {
