@@ -41,6 +41,7 @@ SITE_LABELS = {
     "ctg": "中国三峡集团电子采购平台",
     "china_an": "中国安能电子采购平台",
     "hydl": "华源电力采购网",
+    "sdicc": "国投集团电子采购平台",
 }
 
 NOTICE_TYPE_LABELS = {

@@ -30,6 +30,7 @@
 | eps.ctg.com.cn | 中国三峡集团电子采购平台 | 待校验 | CMS，招标/采购；分类码/解析待联网校验 |
 | cgpt.china-an.cn | 中国安能电子采购平台 | 待校验 | WAF防护，须Playwright过挑战；列表/分类/解析全待联网校验 |
 | www.hydlcg.com | 华源电力采购网 | 待校验 | Struts2+GBK，竞拍/谈判；端点/分页/解析待联网校验 |
+| www.sdicc.com.cn | 国投集团电子采购平台 | 待校验 | Java SSR，列表/cgxx/cgxxList，详情guid；分类/分页/解析待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -118,6 +119,9 @@ python -m bidding scrape --site china_an --max-pages 1
 
 # 采集华源电力采购网（Struts2+GBK；解析待联网校验）
 python -m bidding scrape --site hydl --max-pages 1
+
+# 采集国投集团电子采购平台（Java SSR；解析待联网校验）
+python -m bidding scrape --site sdicc --max-pages 1
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -212,6 +216,7 @@ src/bidding/
 │   ├── ctg.py             # 中国三峡集团电子采购平台适配器（CMS）
 │   ├── china_an.py        # 中国安能电子采购平台适配器（WAF防护）
 │   ├── hydl.py            # 华源电力采购网适配器（Struts2+GBK）
+│   ├── sdicc.py           # 国投集团电子采购平台适配器（Java SSR）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
