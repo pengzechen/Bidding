@@ -32,6 +32,7 @@
 | www.hydlcg.com | 华源电力采购网 | 待校验 | Struts2+GBK，竞拍/谈判；端点/分页/解析待联网校验 |
 | www.sdicc.com.cn | 国投集团电子采购平台 | 待校验 | Java SSR，列表/cgxx/cgxxList，详情guid；分类/分页/解析待联网校验 |
 | powerbeijing-ec.com | 京能e购 | 待校验 | 内容在powerbeijing-eshop.com，招标/废标；分页/解析待联网校验 |
+| ebid.espic.com.cn | 电能e招采平台 | 待校验 | 搜索式列表，招标/采购；详情href/分页/解析待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -126,6 +127,9 @@ python -m bidding scrape --site sdicc --max-pages 1
 
 # 采集京能e购（内容在powerbeijing-eshop.com；解析待联网校验）
 python -m bidding scrape --site jn --max-pages 1
+
+# 采集电能e招采平台（搜索式列表；解析待联网校验）
+python -m bidding scrape --site espic --max-pages 1
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -222,6 +226,7 @@ src/bidding/
 │   ├── hydl.py            # 华源电力采购网适配器（Struts2+GBK）
 │   ├── sdicc.py           # 国投集团电子采购平台适配器（Java SSR）
 │   ├── jn.py              # 京能e购适配器（powerbeijing-eshop.com）
+│   ├── espic.py           # 电能e招采平台适配器（搜索式列表）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写

@@ -43,6 +43,7 @@ SITE_LABELS = {
     "hydl": "华源电力采购网",
     "sdicc": "国投集团电子采购平台",
     "jn": "京能e购",
+    "espic": "电能e招采平台",
 }
 
 NOTICE_TYPE_LABELS = {
