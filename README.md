@@ -26,6 +26,13 @@
 | www.chinabidding.cn | 采购与招标网 | 待校验 | 阿里云WAF，须Playwright过挑战；招标公告入口已接入，其余分类/解析待联网校验 |
 | ep.jxic.com | 江投集团电子采购平台 | 待校验 | Nuxt SSR，详情/notice/<id>；分类码/列表分页/解析待联网校验 |
 | bulletin.cebpubservice.com | 中国招标投标公共服务平台 | 待校验 | 国家级聚合，搜索页/xxfbcmses/search/bulletin.html；categoryId/结果解析待联网校验 |
+| dzzb.jnkgjtdzzbgs.com | 晋能控股招标采购 | 待校验 | 静态CMS（同宁夏平台），招标/采购；分类码/解析待联网校验 |
+| eps.ctg.com.cn | 中国三峡集团电子采购平台 | 待校验 | CMS，招标/采购；分类码/解析待联网校验 |
+| cgpt.china-an.cn | 中国安能电子采购平台 | 待校验 | WAF防护，须Playwright过挑战；列表/分类/解析全待联网校验 |
+| www.hydlcg.com | 华源电力采购网 | 待校验 | Struts2+GBK，竞拍/谈判；端点/分页/解析待联网校验 |
+| www.sdicc.com.cn | 国投集团电子采购平台 | 待校验 | Java SSR，列表/cgxx/cgxxList，详情guid；分类/分页/解析待联网校验 |
+| powerbeijing-ec.com | 京能e购 | 待校验 | 内容在powerbeijing-eshop.com，招标/废标；分页/解析待联网校验 |
+| ebid.espic.com.cn | 电能e招采平台 | 待校验 | 搜索式列表，招标/采购；详情href/分页/解析待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -102,6 +109,27 @@ python -m bidding scrape --site jxic --max-pages 1
 
 # 采集中国招标投标公共服务平台（国家级聚合；解析待联网校验）
 python -m bidding scrape --site cebpubservice --max-pages 1
+
+# 采集晋能控股招标采购（静态CMS；解析待联网校验）
+python -m bidding scrape --site jnkg --max-pages 1
+
+# 采集中国三峡集团电子采购平台（CMS；解析待联网校验）
+python -m bidding scrape --site ctg --max-pages 1
+
+# 采集中国安能电子采购平台（WAF防护；解析待联网校验）
+python -m bidding scrape --site china_an --max-pages 1
+
+# 采集华源电力采购网（Struts2+GBK；解析待联网校验）
+python -m bidding scrape --site hydl --max-pages 1
+
+# 采集国投集团电子采购平台（Java SSR；解析待联网校验）
+python -m bidding scrape --site sdicc --max-pages 1
+
+# 采集京能e购（内容在powerbeijing-eshop.com；解析待联网校验）
+python -m bidding scrape --site jn --max-pages 1
+
+# 采集电能e招采平台（搜索式列表；解析待联网校验）
+python -m bidding scrape --site espic --max-pages 1
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -190,6 +218,15 @@ src/bidding/
 │   ├── powerchina.py      # 中国电建设备物资集中采购平台适配器（PDF提取）
 │   ├── chng.py            # 华能集团电子商务平台适配器（Vue SPA + JSON API）
 │   ├── szecp.py           # 华润守正采购交易平台适配器（REST API + 静态详情页）
+│   ├── hebztb.py          # 招标通电子招投标交易平台适配器（JSON API + SSR详情页）
+│   ├── cnnc.py            # 中核集团电子采购平台适配器（瑞数WAF + PDF提取）
+│   ├── jnkg.py            # 晋能控股招标采购适配器（静态CMS）
+│   ├── ctg.py             # 中国三峡集团电子采购平台适配器（CMS）
+│   ├── china_an.py        # 中国安能电子采购平台适配器（WAF防护）
+│   ├── hydl.py            # 华源电力采购网适配器（Struts2+GBK）
+│   ├── sdicc.py           # 国投集团电子采购平台适配器（Java SSR）
+│   ├── jn.py              # 京能e购适配器（powerbeijing-eshop.com）
+│   ├── espic.py           # 电能e招采平台适配器（搜索式列表）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写

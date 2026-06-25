@@ -37,6 +37,13 @@ SITE_LABELS = {
     "szecp": "华润守正",
     "hebztb": "招标通",
     "cnnc": "中核集团",
+    "jnkg": "晋能控股招标采购",
+    "ctg": "中国三峡集团电子采购平台",
+    "china_an": "中国安能电子采购平台",
+    "hydl": "华源电力采购网",
+    "sdicc": "国投集团电子采购平台",
+    "jn": "京能e购",
+    "espic": "电能e招采平台",
 }
 
 NOTICE_TYPE_LABELS = {
