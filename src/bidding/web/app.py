@@ -38,6 +38,7 @@ SITE_LABELS = {
     "hebztb": "招标通",
     "cnnc": "中核集团",
     "jnkg": "晋能控股招标采购",
+    "ctg": "中国三峡集团电子采购平台",
 }
 
 NOTICE_TYPE_LABELS = {

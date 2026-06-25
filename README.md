@@ -27,6 +27,7 @@
 | ep.jxic.com | 江投集团电子采购平台 | 待校验 | Nuxt SSR，详情/notice/<id>；分类码/列表分页/解析待联网校验 |
 | bulletin.cebpubservice.com | 中国招标投标公共服务平台 | 待校验 | 国家级聚合，搜索页/xxfbcmses/search/bulletin.html；categoryId/结果解析待联网校验 |
 | dzzb.jnkgjtdzzbgs.com | 晋能控股招标采购 | 待校验 | 静态CMS（同宁夏平台），招标/采购；分类码/解析待联网校验 |
+| eps.ctg.com.cn | 中国三峡集团电子采购平台 | 待校验 | CMS，招标/采购；分类码/解析待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -106,6 +107,9 @@ python -m bidding scrape --site cebpubservice --max-pages 1
 
 # 采集晋能控股招标采购（静态CMS；解析待联网校验）
 python -m bidding scrape --site jnkg --max-pages 1
+
+# 采集中国三峡集团电子采购平台（CMS；解析待联网校验）
+python -m bidding scrape --site ctg --max-pages 1
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -197,6 +201,7 @@ src/bidding/
 │   ├── hebztb.py          # 招标通电子招投标交易平台适配器（JSON API + SSR详情页）
 │   ├── cnnc.py            # 中核集团电子采购平台适配器（瑞数WAF + PDF提取）
 │   ├── jnkg.py            # 晋能控股招标采购适配器（静态CMS）
+│   ├── ctg.py             # 中国三峡集团电子采购平台适配器（CMS）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
