@@ -37,6 +37,7 @@ SITE_LABELS = {
     "szecp": "华润守正",
     "hebztb": "招标通",
     "cnnc": "中核集团",
+    "jnkg": "晋能控股招标采购",
 }
 
 NOTICE_TYPE_LABELS = {
