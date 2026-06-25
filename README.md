@@ -28,6 +28,7 @@
 | bulletin.cebpubservice.com | 中国招标投标公共服务平台 | 待校验 | 国家级聚合，搜索页/xxfbcmses/search/bulletin.html；categoryId/结果解析待联网校验 |
 | dzzb.jnkgjtdzzbgs.com | 晋能控股招标采购 | 待校验 | 静态CMS（同宁夏平台），招标/采购；分类码/解析待联网校验 |
 | eps.ctg.com.cn | 中国三峡集团电子采购平台 | 待校验 | CMS，招标/采购；分类码/解析待联网校验 |
+| cgpt.china-an.cn | 中国安能电子采购平台 | 待校验 | WAF防护，须Playwright过挑战；列表/分类/解析全待联网校验 |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -110,6 +111,9 @@ python -m bidding scrape --site jnkg --max-pages 1
 
 # 采集中国三峡集团电子采购平台（CMS；解析待联网校验）
 python -m bidding scrape --site ctg --max-pages 1
+
+# 采集中国安能电子采购平台（WAF防护；解析待联网校验）
+python -m bidding scrape --site china_an --max-pages 1
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -202,6 +206,7 @@ src/bidding/
 │   ├── cnnc.py            # 中核集团电子采购平台适配器（瑞数WAF + PDF提取）
 │   ├── jnkg.py            # 晋能控股招标采购适配器（静态CMS）
 │   ├── ctg.py             # 中国三峡集团电子采购平台适配器（CMS）
+│   ├── china_an.py        # 中国安能电子采购平台适配器（WAF防护）
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
