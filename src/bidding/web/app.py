@@ -42,6 +42,7 @@ SITE_LABELS = {
     "china_an": "中国安能电子采购平台",
     "hydl": "华源电力采购网",
     "sdicc": "国投集团电子采购平台",
+    "jn": "京能e购",
 }
 
 NOTICE_TYPE_LABELS = {
